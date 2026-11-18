@@ -9,6 +9,7 @@ npm install
 npm run dev        # 本地开发 http://localhost:5173
 npm run build      # 类型检查 + 构建 + 预渲染，产物在 dist/
 npm run preview    # 预览构建产物
+npm run deploy     # 构建并部署到 Cloudflare Pages（首次先运行 npx wrangler login 登录）
 ```
 
 `dist/` 是纯静态文件，`base` 为 `./`，可以放在域名根目录或任意子目录（GitHub Pages、Nginx、对象存储均可）。

@@ -1,0 +1,4 @@
+# Cloudflare Pages 配置：`wrangler pages deploy` 从这里读取项目名和要上传的目录
+name = "cloud-tycoon-page"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-11-18"
