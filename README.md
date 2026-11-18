@@ -1,6 +1,6 @@
 # 云上大亨 官网
 
-[![Deploy to Cloudflare Pages](https://github.com/cloudsmithy/Cloud-Tycoon-Page/actions/workflows/deploy-cloudflare.yml/badge.svg?branch=master)](https://github.com/cloudsmithy/Cloud-Tycoon-Page/actions/workflows/deploy-cloudflare.yml)
+[![Cloudflare Pages](https://img.shields.io/github/check-runs/cloudsmithy/Cloud-Tycoon-Page/master?nameFilter=Cloudflare%20Pages%3A%20cloud-tycoon-page&label=Cloudflare%20Pages&logo=cloudflare&logoColor=white)](https://github.com/cloudsmithy/Cloud-Tycoon-Page/commits/master)
 
 线上地址：[中文](https://cloud-tycoon-page.pages.dev/) · [English](https://cloud-tycoon-page.pages.dev/en) · [日本語](https://cloud-tycoon-page.pages.dev/ja)
 
@@ -20,14 +20,9 @@ npm run deploy     # 构建并部署到 Cloudflare Pages（首次先运行 npx w
 
 ## 自动部署
 
-推送到 `master` 后，GitHub Actions 会自动构建并发布到 Cloudflare Pages，README 顶部的徽章就是这一步的结果。第一次使用前，在仓库 Settings → Secrets and variables → Actions 里添加两个 secret：
+Cloudflare Pages 直接连着这个仓库：推送到 `master` 后，Cloudflare 自动拉代码、运行 `npm run build`、发布 `dist/`，GitHub 里不用配任何 secret。每次构建的结果会作为「Cloudflare Pages」检查显示在提交上，README 顶部的徽章读的就是它；构建日志在 Cloudflare 控制台「Workers 和 Pages → cloud-tycoon-page」。
 
-| 名称 | 内容 |
-|---|---|
-| `CLOUDFLARE_API_TOKEN` | 在 Cloudflare「我的个人资料 → API 令牌」新建，权限只给「帐户 → Cloudflare Pages → 编辑」 |
-| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare 帐户 ID，在控制台右侧栏或 `npx wrangler whoami` 里能看到 |
-
-本地也可以直接运行 `npm run deploy` 发布。
+Cloudflare 项目设置：生产分支 `master`，构建命令 `npm run build`，输出目录 `dist`，Node 版本由仓库里的 `.node-version` 指定。急用时也可以在本地运行 `npm run deploy` 直接上传。
 
 ## 多语言
 
@@ -57,4 +52,4 @@ npm run deploy     # 构建并部署到 Cloudflare Pages（首次先运行 npx w
 
 ## 换域名
 
-规范地址、hreflang 和分享图都用绝对地址，默认是 `https://cloud-tycoon-page.pages.dev/`。换正式域名时构建前设 `SITE_URL`，例如 `SITE_URL=https://example.com/ npm run build`；用 GitHub Actions 部署的话，在 workflow 的 Build 步骤里加同名环境变量。
+规范地址、hreflang 和分享图都用绝对地址，默认是 `https://cloud-tycoon-page.pages.dev/`。换正式域名时改 `scripts/prerender.mjs` 里 `SITE_URL` 的默认值；本地构建也可以临时指定，例如 `SITE_URL=https://example.com/ npm run build`。
