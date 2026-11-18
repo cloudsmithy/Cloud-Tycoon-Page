@@ -1,6 +1,6 @@
 # 云上大亨 官网
 
-[![Cloudflare Pages](https://img.shields.io/github/check-runs/cloudsmithy/Cloud-Tycoon-Page/master?nameFilter=Cloudflare%20Pages%3A%20cloud-tycoon-page&label=Cloudflare%20Pages&logo=cloudflare&logoColor=white)](https://github.com/cloudsmithy/Cloud-Tycoon-Page/commits/master)
+[![Cloudflare Pages](https://img.shields.io/github/check-runs/cloudsmithy/Cloud-Tycoon-Page/master?nameFilter=Cloudflare%20Pages&label=Cloudflare%20Pages&logo=cloudflare&logoColor=white)](https://github.com/cloudsmithy/Cloud-Tycoon-Page/commits/master)
 
 线上地址：[中文](https://cloud-tycoon-page.pages.dev/) · [English](https://cloud-tycoon-page.pages.dev/en) · [日本語](https://cloud-tycoon-page.pages.dev/ja)
 
