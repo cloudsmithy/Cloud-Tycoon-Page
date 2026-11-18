@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { LINKS, RELEASE, VIDEOS, img } from '../content'
 import { useVideo } from '../lib/video'
+import { keepWords } from '../lib/text'
 import { BrowserFrame, Zoomable } from './ui'
 
 const BOARD_ALT = '云上大亨游戏界面：48 格棋盘四周是 EC2、Lambda、RDS 等服务格，右侧是四位玩家的资产面板和对局动态'
@@ -30,7 +31,7 @@ export default function Hero() {
             {RELEASE.headline}
             <ArrowRight size={14} aria-hidden="true" />
           </a>
-          <p className="hero__kicker">亚马逊云科技 User Group 原创云架构桌游</p>
+          <p className="hero__kicker">{keepWords('亚马逊云科技 User Group 原创云架构桌游')}</p>
           <h1 className="hero__title">
             云上<span>大亨</span>
           </h1>

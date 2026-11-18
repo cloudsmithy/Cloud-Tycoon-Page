@@ -1,6 +1,7 @@
 import { Check } from 'lucide-react'
 import { ARCH_CATEGORIES, SHOWCASE, img, type ShowcaseRow } from '../content'
 import ArchDiagram from './ArchDiagram'
+import { keepWords } from '../lib/text'
 import { Reveal, SectionHeading, Zoomable } from './ui'
 
 const DEED_ALT = 'EC2 服务卡：是什么、常用来做什么、当前级别、过路费、每圈运行费和关联的有效架构'
@@ -75,14 +76,14 @@ export default function Showcase() {
               </Reveal>
               <Reveal className="show-row__copy" delay={100}>
                 <p className="eyebrow">{row.eyebrow}</p>
-                <h3>{row.title}</h3>
-                <p className="show-row__text">{row.text}</p>
+                <h3>{keepWords(row.title)}</h3>
+                <p className="show-row__text">{keepWords(row.text)}</p>
                 {row.points && (
                   <ul className="checklist">
                     {row.points.map((p) => (
                       <li key={p}>
                         <Check size={14} strokeWidth={3} aria-hidden="true" />
-                        <span>{p}</span>
+                        <span>{keepWords(p)}</span>
                       </li>
                     ))}
                   </ul>

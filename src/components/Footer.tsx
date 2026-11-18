@@ -1,5 +1,5 @@
 import { ArrowUp, Heart } from 'lucide-react'
-import { DISCLAIMERS, FOOTER_COLUMNS } from '../content'
+import { DISCLAIMERS, FOOTER_COLUMNS, LINKS } from '../content'
 import { useScrolled } from '../lib/hooks'
 import { LogoMark } from './ui'
 
@@ -51,7 +51,9 @@ export default function Footer() {
           <span>
             © <span suppressHydrationWarning>{new Date().getFullYear()}</span> 亚马逊云科技 User Group · 云上大亨开发小组
           </span>
-          <span>源码公开在 GitHub</span>
+          <a href={LINKS.repo} target="_blank" rel="noopener noreferrer">
+            源码公开在 GitHub
+          </a>
         </div>
       </div>
 

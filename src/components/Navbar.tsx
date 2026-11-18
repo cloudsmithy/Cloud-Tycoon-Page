@@ -75,7 +75,13 @@ export default function Navbar() {
         <nav className="drawer" aria-label="移动端导航">
           <div className="container">
             {NAV_ITEMS.map((item) => (
-              <a key={item.id} href={`#${item.id}`} onClick={() => setOpen(false)}>
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className={active === item.id ? 'is-active' : undefined}
+                aria-current={active === item.id ? 'true' : undefined}
+                onClick={() => setOpen(false)}
+              >
                 {item.label}
               </a>
             ))}

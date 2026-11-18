@@ -47,6 +47,7 @@ export const LINKS = {
   learnSvc: 'https://aws-game.usergroup.cn/learn/svc/',
   changelog: `https://aws-game.usergroup.cn/docs/${encodeURIComponent('更新说明')}.html`,
   repo: REPO,
+  siteRepo: 'https://github.com/cloudsmithy/Cloud-Tycoon-Page',
   issues: `${REPO}/issues`,
   docQuick: repoFile('docs/玩法速览.md'),
   docManual: repoFile('docs/玩法手册.md'),
@@ -65,7 +66,7 @@ export const NAV_ITEMS = [
   { id: 'roles', label: '角色' },
   { id: 'learn', label: '学习中心' },
   { id: 'videos', label: '视频' },
-  { id: 'events', label: '线下活动' },
+  { id: 'events', label: '活动' },
   { id: 'faq', label: '常见问题' },
 ] as const
 
@@ -77,18 +78,20 @@ export interface VideoItem {
   duration: string
   src: string
   note?: string
+  /** 首次打开要下载的大小，手机流量用户心里有数 */
+  size?: string
 }
 
 export const VIDEOS = {
-  trailer: { id: 'trailer', title: '云上大亨 完整宣传片', duration: '3:25', src: videoSrc('trailer.html'), note: '序章短剧 · 玩法亮点 · 片尾彩蛋' },
-  teaser: { id: 'teaser', title: '短宣传片', duration: '0:52', src: videoSrc('teaser.html'), note: '52 秒，一口气看完云上大亨的精彩瞬间' },
-  guide: { id: 'guide', title: '完整玩法讲解', duration: '5:29', src: videoSrc('guide.html'), note: '跟着旁白走一局，5 分钟轻松上手' },
-  fun: { id: 'fun', title: '娱乐模式 玩法讲解', duration: '1:53', src: videoSrc('guide-fun.html') },
-  intro: { id: 'intro', title: '入门局 玩法讲解', duration: '1:54', src: videoSrc('guide-intro.html') },
-  standard: { id: 'standard', title: '标准局 玩法讲解', duration: '1:28', src: videoSrc('guide-standard.html') },
-  full: { id: 'full', title: '完整局 玩法讲解', duration: '1:23', src: videoSrc('guide-full.html') },
-  learn: { id: 'learn', title: '学习模式 玩法讲解', duration: '1:24', src: videoSrc('guide-learn.html') },
-  hell: { id: 'hell', title: '地狱模式 玩法讲解', duration: '1:28', src: videoSrc('guide-hell.html') },
+  trailer: { id: 'trailer', title: '云上大亨 完整宣传片', duration: '3:25', src: videoSrc('trailer.html'), note: '序章短剧 · 玩法亮点 · 片尾彩蛋', size: '约 19 MB' },
+  teaser: { id: 'teaser', title: '短宣传片', duration: '0:52', src: videoSrc('teaser.html'), note: '52 秒，一口气看完云上大亨的精彩瞬间', size: '约 2.5 MB' },
+  guide: { id: 'guide', title: '完整玩法讲解', duration: '5:29', src: videoSrc('guide.html'), note: '跟着旁白走一局，5 分钟轻松上手', size: '约 10 MB' },
+  fun: { id: 'fun', title: '娱乐模式 玩法讲解', duration: '1:53', src: videoSrc('guide-fun.html'), size: '约 4 MB' },
+  intro: { id: 'intro', title: '入门局 玩法讲解', duration: '1:54', src: videoSrc('guide-intro.html'), size: '约 4 MB' },
+  standard: { id: 'standard', title: '标准局 玩法讲解', duration: '1:28', src: videoSrc('guide-standard.html'), size: '约 3.4 MB' },
+  full: { id: 'full', title: '完整局 玩法讲解', duration: '1:23', src: videoSrc('guide-full.html'), size: '约 3.3 MB' },
+  learn: { id: 'learn', title: '学习模式 玩法讲解', duration: '1:24', src: videoSrc('guide-learn.html'), size: '约 3.3 MB' },
+  hell: { id: 'hell', title: '地狱模式 玩法讲解', duration: '1:28', src: videoSrc('guide-hell.html'), size: '约 3.4 MB' },
 } satisfies Record<string, VideoItem>
 
 /* ---------- 数据条 ---------- */
@@ -510,7 +513,14 @@ export const LEARN = {
 
 export const SVC_ICONS = ['s3', 'lambda', 'ec2', 'dynamodb', 'cloudfront', 'apigw', 'sqs', 'rds', 'bedrock', 'sagemaker', 'guardduty', 'cloudwatch']
 
-/* ---------- 线下活动 ---------- */
+/* ---------- 活动 ---------- */
+
+/** 云上大亨亮相过的活动，按时间先后排列；有回放、照片时可以再补链接 */
+export const RECENT_EVENTS = [
+  { date: '2026-11-13', weekday: '周五', title: 'UG 线上直播小组', place: '线上直播', online: true },
+  { date: '2026-11-14', weekday: '周六', title: '东京 UG 介绍', place: '东京', online: false },
+]
+
 
 export const UG_PRESET = '线下活动用：娱乐模式 + 边玩边答题，打 12 轮或 30 分钟（先到为准），4 人一桌。'
 
@@ -595,7 +605,8 @@ export const FOOTER_COLUMNS = [
   {
     title: '社区',
     links: [
-      { label: 'GitHub 仓库', href: LINKS.repo },
+      { label: '游戏源码（GitHub）', href: LINKS.repo },
+      { label: '官网源码（GitHub）', href: LINKS.siteRepo },
       { label: '问题反馈', href: LINKS.issues },
       { label: '更新说明', href: LINKS.changelog },
       { label: '常用手册（PDF）', href: LINKS.handbookDir },

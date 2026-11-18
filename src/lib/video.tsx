@@ -69,6 +69,7 @@ function VideoModal({ video, onClosed }: { video: VideoItem | null; onClosed: ()
               <div className="video-modal__loading" role="status">
                 <LoaderCircle className="spin" size={30} aria-hidden="true" />
                 <span>视频加载中…</span>
+                {video.size && <small>首次打开需要下载{video.size}，之后会快很多</small>}
               </div>
             )}
             <iframe

@@ -2,6 +2,7 @@ import { useId, type CSSProperties, type ReactNode } from 'react'
 import { Lock, ZoomIn } from 'lucide-react'
 import { useReveal } from '../lib/hooks'
 import { useLightbox, type ZoomImage } from '../lib/lightbox'
+import { keepWords } from '../lib/text'
 
 /** 滚动淡入容器；fill 让它在网格里撑满高度 */
 export function Reveal({
@@ -31,8 +32,8 @@ export function SectionHeading({ eyebrow, title, lead }: { eyebrow: string; titl
   return (
     <Reveal className="section-head">
       <p className="eyebrow">{eyebrow}</p>
-      <h2>{title}</h2>
-      {lead && <p className="lead">{lead}</p>}
+      <h2>{keepWords(title)}</h2>
+      {lead && <p className="lead">{keepWords(lead)}</p>}
     </Reveal>
   )
 }

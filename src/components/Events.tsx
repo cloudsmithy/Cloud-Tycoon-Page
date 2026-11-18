@@ -1,6 +1,14 @@
-import { ArrowUpRight, FileText, PartyPopper, Presentation, Printer, Timer, Users } from 'lucide-react'
-import { HANDBOOKS, LINKS, UG_PRESET, handbookUrl } from '../content'
+import { ArrowUpRight, CalendarDays, FileText, MapPin, PartyPopper, Presentation, Printer, Radio, Timer, Users } from 'lucide-react'
+import { HANDBOOKS, LINKS, RECENT_EVENTS, UG_PRESET, handbookUrl } from '../content'
+
+import { keepWords } from '../lib/text'
 import { Reveal, SectionHeading } from './ui'
+
+/** 2026-11-13 → 11月13日（直接拆字符串，不经过 Date，避免时区差一天） */
+const monthDay = (iso: string) => {
+  const [, m, d] = iso.split('-').map(Number)
+  return `${m}月${d}日`
+}
 
 export default function Events() {
   return (
@@ -11,6 +19,37 @@ export default function Events() {
           title="带去你的 User Group 活动"
           lead="线上联机、线下开黑都合适。开局页有专门给活动准备的「UG 活动局」，仓库里还有整套活动手册和实体版打印文件。"
         />
+
+        <Reveal>
+          <div className="recent">
+            <h3 className="recent__title">
+              <CalendarDays size={18} aria-hidden="true" />
+              近期活动
+            </h3>
+            <ol className="recent__list">
+              {RECENT_EVENTS.map((e) => {
+                const PlaceIcon = e.online ? Radio : MapPin
+                return (
+                  <li key={e.date + e.title} className="recent__item">
+                    <time className="recent__date" dateTime={e.date}>
+                      <b>{monthDay(e.date)}</b>
+                      <span>{e.weekday}</span>
+                    </time>
+                    <div className="recent__body">
+                      <b>{keepWords(e.title)}</b>
+                      <span>
+                        <PlaceIcon size={13} aria-hidden="true" />
+                        {e.place}
+                        <em className="recent__status-inline"> · 已举办</em>
+                      </span>
+                    </div>
+                    <span className="recent__status" aria-hidden="true">已举办</span>
+                  </li>
+                )
+              })}
+            </ol>
+          </div>
+        </Reveal>
 
         <div className="events">
           <Reveal fill>
