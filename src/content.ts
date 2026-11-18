@@ -57,6 +57,49 @@ export const LINKS = {
 
 export const handbookUrl = (file: string) => repoFile(`docs/常用手册/${file}`)
 
+/* ---------- 按语言区分的链接 ---------- */
+
+const INTL = 'https://cloudsmithy.github.io/aws_game/'
+const CN = 'https://aws-game.usergroup.cn/'
+
+/**
+ * 中文页默认走国内线路；英文、日文页的访客多在海外，默认走 GitHub Pages 国际线路，
+ * 另给中国大陆用户留国内线路。玩法手册、速览有英日文版；规则书、更新说明、PDF 只有中文。
+ */
+export function linksFor(lang: 'zh' | 'en' | 'ja') {
+  if (lang === 'zh') {
+    return {
+      play: LINKS.playCn,
+      playAlt: LINKS.playIntl,
+      learnArch: LINKS.learnArch,
+      learnSvc: LINKS.learnSvc,
+      docQuick: LINKS.docQuick,
+      docManual: LINKS.docManual,
+      gameLangs: [
+        ['中文', null],
+        ['English', LINKS.playEn],
+        ['日本語', LINKS.playJa],
+      ] as [string, string | null][],
+    }
+  }
+  return {
+    play: `${INTL}${lang}/`,
+    playAlt: `${CN}${lang}/`,
+    learnArch: `${INTL}learn/${lang}/arch/`,
+    learnSvc: `${INTL}learn/${lang}/svc/`,
+    docQuick: repoFile(`code/i18n/${lang}/玩法速览.md`),
+    docManual: repoFile(`code/i18n/${lang}/玩法手册.md`),
+    gameLangs: [
+      ['中文', INTL],
+      ['English', lang === 'en' ? null : `${INTL}en/`],
+      ['日本語', lang === 'ja' ? null : `${INTL}ja/`],
+    ] as [string, string | null][],
+  }
+}
+
+/** 游戏截图：英文、日文页用对应语言界面的截图 */
+export const shot = (lang: 'zh' | 'en' | 'ja', file: string) => img(lang === 'zh' ? `shots/${file}` : `shots/${lang}/${file}`)
+
 /* ---------- 导航 ---------- */
 
 export const NAV_ITEMS = [

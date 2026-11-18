@@ -1,4 +1,5 @@
 import { STATS } from '../content'
+import { useI18n } from '../i18n'
 import { useCountUp } from '../lib/hooks'
 
 function Stat({ value, label }: { value: number; label: string }) {
@@ -12,12 +13,13 @@ function Stat({ value, label }: { value: number; label: string }) {
 }
 
 export default function Stats() {
+  const { t } = useI18n()
   return (
     <div className="stats">
       <div className="container">
         <div className="stats__grid">
           {STATS.map((s) => (
-            <Stat key={s.label} value={s.value} label={s.label} />
+            <Stat key={s.label} value={s.value} label={t(s.label)} />
           ))}
         </div>
       </div>

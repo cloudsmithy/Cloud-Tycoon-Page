@@ -1,8 +1,8 @@
 import { useId, type CSSProperties, type ReactNode } from 'react'
 import { Lock, ZoomIn } from 'lucide-react'
+import { LANGS, LANG_META, useI18n } from '../i18n'
 import { useReveal } from '../lib/hooks'
 import { useLightbox, type ZoomImage } from '../lib/lightbox'
-import { keepWords } from '../lib/text'
 
 /** 滚动淡入容器；fill 让它在网格里撑满高度 */
 export function Reveal({
@@ -28,12 +28,14 @@ export function Reveal({
   )
 }
 
+/** 小节标题。传进来的文字已经翻译好，这里只处理英文词组不拆行 */
 export function SectionHeading({ eyebrow, title, lead }: { eyebrow: string; title: string; lead?: string }) {
+  const { kw } = useI18n()
   return (
     <Reveal className="section-head">
       <p className="eyebrow">{eyebrow}</p>
-      <h2>{keepWords(title)}</h2>
-      {lead && <p className="lead">{keepWords(lead)}</p>}
+      <h2>{kw(title)}</h2>
+      {lead && <p className="lead">{kw(lead)}</p>}
     </Reveal>
   )
 }
@@ -76,13 +78,71 @@ export function BrowserFrame({
 /** 点击放大查看截图；按钮的可读名称来自里面图片的 alt */
 export function Zoomable({ image, className = '', children }: { image: ZoomImage; className?: string; children: ReactNode }) {
   const zoom = useLightbox()
+  const { t } = useI18n()
   return (
-    <button type="button" className={`zoomable ${className}`.trim()} onClick={() => zoom(image)} title="点击放大">
+    <button type="button" className={`zoomable ${className}`.trim()} onClick={() => zoom(image)} title={t('点击放大')}>
       {children}
       <span className="zoomable__hint" aria-hidden="true">
         <ZoomIn size={16} />
       </span>
     </button>
+  )
+}
+
+/** 顶栏、页脚的品牌名：主名用当前语言，小字用另一种写法 */
+export function BrandText() {
+  const { lang } = useI18n()
+  const [name, sub] =
+    lang === 'zh' ? ['云上大亨', 'Cloud Tycoon'] : lang === 'en' ? ['Cloud Tycoon', '云上大亨'] : ['クラウドタイクーン', 'Cloud Tycoon']
+  return (
+    <span className="brand__text">
+      {name}
+      <small>{sub}</small>
+    </span>
+  )
+}
+
+/** 语言切换：链到同一目录下的 index.html / en.html / ja.html */
+export function LangSwitch({ full = false, className = '' }: { full?: boolean; className?: string }) {
+  const { lang } = useI18n()
+  return (
+    <nav className={`lang-switch ${className}`.trim()} aria-label="语言 / Language / 言語">
+      {LANGS.map((l) => {
+        const meta = LANG_META[l]
+        const current = l === lang
+        return (
+          <a
+            key={l}
+            href={meta.file}
+            hrefLang={meta.htmlLang}
+            lang={meta.htmlLang}
+            className={current ? 'is-active' : undefined}
+            aria-current={current ? 'true' : undefined}
+          >
+            {full ? meta.label : meta.short}
+          </a>
+        )
+      })}
+    </nav>
+  )
+}
+
+/** 英文、日文页上标明「只有中文」的资源（宣传片、规则书、PDF 等） */
+export function ZhOnly() {
+  const { lang, t } = useI18n()
+  if (lang === 'zh') return null
+  return <span className="lang-badge">{t('中文')}</span>
+}
+
+/** 把带 {0} 的译文拆开，中间放一个元素（比如链接），不同语言里链接的位置可以不同 */
+export function Rich({ text, children }: { text: string; children: ReactNode }) {
+  const [before, after = ''] = text.split('{0}')
+  return (
+    <>
+      {before}
+      {children}
+      {after}
+    </>
   )
 }
 

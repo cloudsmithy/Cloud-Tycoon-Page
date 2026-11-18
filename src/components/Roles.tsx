@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ArrowLeftRight, ChevronDown, Zap } from 'lucide-react'
 import { PARTNERS, ROLES, img, type Role } from '../content'
+import { useI18n } from '../i18n'
 import { Reveal, SectionHeading } from './ui'
 
 type Filter = 'all' | Role['type']
@@ -17,6 +18,7 @@ const PREVIEW = 6
 const countOf = (f: Filter) => (f === 'all' ? ROLES.length : ROLES.filter((r) => r.type === f).length)
 
 export default function Roles() {
+  const { t, tf, kw } = useI18n()
   const [filter, setFilter] = useState<Filter>('all')
   const [expanded, setExpanded] = useState(false)
   const list = ROLES.filter((r) => filter === 'all' || r.type === filter)
@@ -27,8 +29,8 @@ export default function Roles() {
       <div className="container">
         <SectionHeading
           eyebrow="Characters"
-          title="15 个角色，每个都藏着一张翻盘牌"
-          lead="12 个客户角色和 3 个代理商，各有专长和短板。总资产跌破开局资金一半时，可以发动一次专属技能。"
+          title={t('15 个角色，每个都藏着一张翻盘牌')}
+          lead={t('12 个客户角色和 3 个代理商，各有专长和短板。总资产跌破开局资金一半时，可以发动一次专属技能。')}
         />
 
         <Reveal>
@@ -42,18 +44,18 @@ export default function Roles() {
                     height={p.height}
                     loading="lazy"
                     decoding="async"
-                    alt={`${p.name}的棋子立牌`}
+                    alt={tf('{0}的棋子立牌', t(p.name))}
                   />
-                  <figcaption>{p.name}</figcaption>
+                  <figcaption>{t(p.name)}</figcaption>
                 </figure>
               ))}
             </div>
-            <p className="partners__note">棋子立牌是 User Group 活动里的四位伙伴，每局随机分给各个座位。</p>
+            <p className="partners__note">{kw(t('棋子立牌是 User Group 活动里的四位伙伴，每局随机分给各个座位。'))}</p>
           </div>
         </Reveal>
 
         <div className="roles-toolbar">
-          <div className="filter" role="group" aria-label="筛选角色">
+          <div className="filter" role="group" aria-label={t('筛选角色')}>
             {FILTERS.map(([key, label]) => (
               <button
                 key={key}
@@ -65,30 +67,30 @@ export default function Roles() {
                   setExpanded(false)
                 }}
               >
-                {label}
+                {t(label)}
                 <span>{countOf(key)}</span>
               </button>
             ))}
           </div>
-          <p className="roles-toolbar__hint">开局可以「三选一挑角色」，不开就随机分；代理商角色在开启代理商模式后可用。</p>
+          <p className="roles-toolbar__hint">{kw(t('开局可以「三选一挑角色」，不开就随机分；代理商角色在开启代理商模式后可用。'))}</p>
         </div>
 
         <ul className="roles-grid" id="roles-grid">
           {list.map((r, i) => (
             <li key={r.name} className={`role${collapsible && !expanded && i >= PREVIEW ? ' is-folded' : ''}`}>
               <div className="role__head">
-                <h3>{r.name}</h3>
-                <span className={`role__type role__type--${r.type}`}>{r.type === 'agent' ? '代理商' : '客户'}</span>
+                <h3>{t(r.name)}</h3>
+                <span className={`role__type role__type--${r.type}`}>{r.type === 'agent' ? t('代理商') : t('客户')}</span>
               </div>
-              <p className="role__perk">{r.perk}</p>
+              <p className="role__perk">{kw(t(r.perk))}</p>
               <div className="role__skill">
                 <div className="role__skill-inner">
                   <span className="role__skill-label">
                     <Zap size={13} aria-hidden="true" />
-                    翻盘技能
+                    {t('翻盘技能')}
                   </span>
-                  <b>{r.skill}</b>
-                  <p>{r.effect}</p>
+                  <b>{t(r.skill)}</b>
+                  <p>{kw(t(r.effect))}</p>
                 </div>
               </div>
             </li>
@@ -96,7 +98,7 @@ export default function Roles() {
         </ul>
         <p className="swipe-hint" aria-hidden="true">
           <ArrowLeftRight size={14} />
-          左右滑动，查看全部 {list.length} 个角色
+          {tf('左右滑动，查看全部 {0} 个角色', list.length)}
         </p>
 
         {collapsible && (
@@ -108,7 +110,7 @@ export default function Roles() {
               aria-controls="roles-grid"
               onClick={() => setExpanded((v) => !v)}
             >
-              {expanded ? '收起' : `展开全部 ${list.length} 个角色`}
+              {expanded ? t('收起') : tf('展开全部 {0} 个角色', list.length)}
               <ChevronDown size={16} aria-hidden="true" className={expanded ? 'is-flipped' : undefined} />
             </button>
           </div>

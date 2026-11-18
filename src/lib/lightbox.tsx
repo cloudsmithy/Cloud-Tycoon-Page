@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { X } from 'lucide-react'
+import { useI18n } from '../i18n'
 
 export interface ZoomImage {
   src: string
@@ -25,6 +26,7 @@ export function LightboxProvider({ children }: { children: ReactNode }) {
 }
 
 function Lightbox({ image, onClosed }: { image: ZoomImage | null; onClosed: () => void }) {
+  const { t } = useI18n()
   const ref = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
@@ -40,7 +42,7 @@ function Lightbox({ image, onClosed }: { image: ZoomImage | null; onClosed: () =
     <dialog
       ref={ref}
       className="lightbox"
-      aria-label={image?.alt ?? '图片'}
+      aria-label={image?.alt ?? t('图片')}
       onClose={() => {
         document.documentElement.classList.remove('modal-open')
         onClosed()
@@ -52,7 +54,7 @@ function Lightbox({ image, onClosed }: { image: ZoomImage | null; onClosed: () =
         <>
           <img src={image.src} alt={image.alt} width={image.width} height={image.height} />
           <p className="lightbox__caption">{image.alt}</p>
-          <button type="button" className="icon-btn lightbox__close" onClick={close} aria-label="关闭图片">
+          <button type="button" className="icon-btn lightbox__close" onClick={close} aria-label={t('关闭图片')}>
             <X size={18} aria-hidden="true" />
           </button>
         </>

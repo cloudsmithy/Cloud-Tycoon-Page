@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ArrowUpRight, CirclePlay } from 'lucide-react'
-import { LINKS, MODES, WIN_CONDITIONS, WIN_NOTE } from '../content'
+import { MODES, WIN_CONDITIONS, WIN_NOTE, linksFor } from '../content'
+import { useI18n } from '../i18n'
 import { handleTabKeys } from '../lib/hooks'
 import { useVideo } from '../lib/video'
 import { Reveal, SectionHeading } from './ui'
@@ -8,6 +9,8 @@ import { Reveal, SectionHeading } from './ui'
 const DEFAULT_MODE = MODES.findIndex((m) => m.id === 'standard')
 
 export default function Modes() {
+  const { t, tf, kw, lang } = useI18n()
+  const L = linksFor(lang)
   const [index, setIndex] = useState(DEFAULT_MODE)
   const openVideo = useVideo()
   const mode = MODES[index]
@@ -18,13 +21,13 @@ export default function Modes() {
       <div className="container">
         <SectionHeading
           eyebrow="Modes"
-          title="6 种模式，从聚会暖场到地狱难度"
-          lead="默认打满 15 轮按估值排名，约 20 分钟一局。每个模式都配了一段一两分钟的玩法讲解。"
+          title={t('6 种模式，从聚会暖场到地狱难度')}
+          lead={t('默认打满 15 轮按估值排名，约 20 分钟一局。每个模式都配了一段一两分钟的玩法讲解。')}
         />
 
         <Reveal>
           <div className="modes">
-            <div className="modes__list" role="tablist" aria-label="游戏模式" aria-orientation="vertical">
+            <div className="modes__list" role="tablist" aria-label={t('游戏模式')} aria-orientation="vertical">
               {MODES.map((m, i) => {
                 const TabIcon = m.icon
                 return (
@@ -44,8 +47,8 @@ export default function Modes() {
                       <TabIcon size={18} aria-hidden="true" />
                     </span>
                     <span className="mode-tab__text">
-                      <b>{m.name}</b>
-                      <small>{m.tag}</small>
+                      <b>{t(m.name)}</b>
+                      <small>{t(m.tag)}</small>
                     </span>
                   </button>
                 )
@@ -63,22 +66,22 @@ export default function Modes() {
                   <Icon size={24} aria-hidden="true" />
                 </span>
                 <div>
-                  <h3>{mode.name}</h3>
-                  <span className="mode-badge">{mode.tag}</span>
+                  <h3>{t(mode.name)}</h3>
+                  <span className="mode-badge">{t(mode.tag)}</span>
                 </div>
               </div>
-              <p className="mode-panel__desc">{mode.desc}</p>
+              <p className="mode-panel__desc">{kw(t(mode.desc))}</p>
               <dl className="facts">
                 <div className="fact">
-                  <dt>时长</dt>
-                  <dd>{mode.pace}</dd>
+                  <dt>{t('时长')}</dt>
+                  <dd>{kw(t(mode.pace))}</dd>
                 </div>
                 <div className="fact">
-                  <dt>适合</dt>
-                  <dd>{mode.fit}</dd>
+                  <dt>{t('适合')}</dt>
+                  <dd>{kw(t(mode.fit))}</dd>
                 </div>
                 <div className="fact">
-                  <dt>规则复杂度</dt>
+                  <dt>{t('规则复杂度')}</dt>
                   <dd>
                     <span className="meter" role="img" aria-label={`${mode.level} / 5`}>
                       {[1, 2, 3, 4, 5].map((n) => (
@@ -91,11 +94,14 @@ export default function Modes() {
               <div className="mode-panel__actions">
                 <button type="button" className="btn btn--primary" onClick={() => openVideo(mode.video)}>
                   <CirclePlay size={18} aria-hidden="true" />
-                  看{mode.name}讲解
-                  <span className="btn__meta btn__meta--on-primary">{mode.video.duration}</span>
+                  {tf('看{0}讲解', t(mode.name))}
+                  <span className="btn__meta btn__meta--on-primary">
+                    {mode.video.duration}
+                    {lang !== 'zh' && ` · ${t('中文')}`}
+                  </span>
                 </button>
-                <a className="btn btn--secondary" href={LINKS.playCn} target="_blank" rel="noopener noreferrer">
-                  开一局试试
+                <a className="btn btn--secondary" href={L.play} target="_blank" rel="noopener noreferrer">
+                  {t('开一局试试')}
                   <ArrowUpRight size={16} aria-hidden="true" />
                 </a>
               </div>
@@ -113,15 +119,15 @@ export default function Modes() {
                     <WinIcon size={18} aria-hidden="true" />
                   </span>
                   <div>
-                    <h4>{w.title}</h4>
-                    <p>{w.desc}</p>
+                    <h4>{t(w.title)}</h4>
+                    <p>{kw(t(w.desc))}</p>
                   </div>
                 </div>
               </Reveal>
             )
           })}
         </div>
-        <p className="wins__note">{WIN_NOTE}</p>
+        <p className="wins__note">{kw(t(WIN_NOTE))}</p>
       </div>
     </section>
   )

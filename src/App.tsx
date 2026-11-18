@@ -17,13 +17,15 @@ import Footer from './components/Footer'
 import MobileCta from './components/MobileCta'
 import { LightboxProvider } from './lib/lightbox'
 import { VideoProvider } from './lib/video'
+import { LangProvider, translate, type Lang } from './i18n'
 
-export default function App() {
+export default function App({ lang }: { lang: Lang }) {
   return (
+    <LangProvider lang={lang}>
     <VideoProvider>
       <LightboxProvider>
       <a className="skip-link" href="#main">
-        跳到正文
+        {translate(lang, '跳到正文')}
       </a>
       <Navbar />
       <main id="main">
@@ -46,5 +48,6 @@ export default function App() {
       <MobileCta />
       </LightboxProvider>
     </VideoProvider>
+    </LangProvider>
   )
 }

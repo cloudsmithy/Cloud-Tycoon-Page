@@ -1,11 +1,9 @@
 import { Check } from 'lucide-react'
-import { ARCH_CATEGORIES, SHOWCASE, img, type ShowcaseRow } from '../content'
+import { ARCH_CATEGORIES, SHOWCASE, shot, type ShowcaseRow } from '../content'
+import { useI18n } from '../i18n'
 import ArchDiagram from './ArchDiagram'
-import { keepWords } from '../lib/text'
 import { Reveal, SectionHeading, Zoomable } from './ui'
 
-const DEED_ALT = 'EC2 服务卡：是什么、常用来做什么、当前级别、过路费、每圈运行费和关联的有效架构'
-const SETUP_ALT = '开局设置：UG 活动局一键开局，选择玩家人数、难度模式和胜利条件'
 const CARDS = [
   { cls: 'fan__card--a', file: 'card-share', alt: 're:Invent 卡「技术分享会」：每位其他玩家讲一个亚马逊云科技知识点' },
   { cls: 'fan__card--c', file: 'card-hackathon', alt: 're:Invent 卡「Hackathon 拿了奖」：选一块服务免费加 1 份容量' },
@@ -13,7 +11,8 @@ const CARDS = [
 ]
 
 function Shot({ file, alt, width, height, className }: { file: string; alt: string; width: number; height: number; className: string }) {
-  const src = img(`shots/${file}.webp`)
+  const { lang } = useI18n()
+  const src = shot(lang, `${file}.webp`)
   return (
     <Zoomable image={{ src, alt, width, height }}>
       <img className={`shot ${className}`} src={src} width={width} height={height} loading="lazy" decoding="async" alt={alt} />
@@ -22,10 +21,17 @@ function Shot({ file, alt, width, height, className }: { file: string; alt: stri
 }
 
 function Visual({ id }: { id: ShowcaseRow['id'] }) {
+  const { t, lang } = useI18n()
   if (id === 'deed') {
     return (
       <div className="stage tone-orange">
-        <Shot file="deed" alt={DEED_ALT} width={733} height={1100} className="shot--deed" />
+        <Shot
+          file="deed"
+          alt={t('EC2 服务卡：是什么、常用来做什么、当前级别、过路费、每圈运行费和关联的有效架构')}
+          width={733}
+          height={1100}
+          className="shot--deed"
+        />
       </div>
     )
   }
@@ -34,10 +40,11 @@ function Visual({ id }: { id: ShowcaseRow['id'] }) {
       <div className="stage tone-pink">
         <div className="fan">
           {CARDS.map((c) => {
-            const src = img(`shots/${c.file}.webp`)
+            const src = shot(lang, `${c.file}.webp`)
+            const alt = t(c.alt)
             return (
-              <Zoomable key={c.file} className={`fan__card ${c.cls}`} image={{ src, alt: c.alt, width: 600, height: 838 }}>
-                <img src={src} width={600} height={838} loading="lazy" decoding="async" alt={c.alt} />
+              <Zoomable key={c.file} className={`fan__card ${c.cls}`} image={{ src, alt, width: 600, height: 838 }}>
+                <img src={src} width={600} height={838} loading="lazy" decoding="async" alt={alt} />
               </Zoomable>
             )
           })}
@@ -54,19 +61,26 @@ function Visual({ id }: { id: ShowcaseRow['id'] }) {
   }
   return (
     <div className="stage tone-blue">
-      <Shot file="setup" alt={SETUP_ALT} width={756} height={1100} className="shot--setup" />
+      <Shot
+        file="setup"
+        alt={t('开局设置：UG 活动局一键开局，选择玩家人数、难度模式和胜利条件')}
+        width={756}
+        height={1100}
+        className="shot--setup"
+      />
     </div>
   )
 }
 
 export default function Showcase() {
+  const { t, kw } = useI18n()
   return (
     <section className="section section--soft" id="showcase">
       <div className="container">
         <SectionHeading
           eyebrow="Inside the game"
-          title="在游戏里，你会遇到这些"
-          lead="服务卡、事件卡和开局设置都是游戏里的真实画面。"
+          title={t('在游戏里，你会遇到这些')}
+          lead={t('服务卡、事件卡和开局设置都是游戏里的真实画面。')}
         />
         <div className="showcase">
           {SHOWCASE.map((row, i) => (
@@ -76,23 +90,23 @@ export default function Showcase() {
               </Reveal>
               <Reveal className="show-row__copy" delay={100}>
                 <p className="eyebrow">{row.eyebrow}</p>
-                <h3>{keepWords(row.title)}</h3>
-                <p className="show-row__text">{keepWords(row.text)}</p>
+                <h3>{kw(t(row.title))}</h3>
+                <p className="show-row__text">{kw(t(row.text))}</p>
                 {row.points && (
                   <ul className="checklist">
                     {row.points.map((p) => (
                       <li key={p}>
                         <Check size={14} strokeWidth={3} aria-hidden="true" />
-                        <span>{keepWords(p)}</span>
+                        <span>{kw(t(p))}</span>
                       </li>
                     ))}
                   </ul>
                 )}
                 {row.id === 'arch' && (
-                  <ul className="arch-cats" aria-label="架构分类">
+                  <ul className="arch-cats" aria-label={t('架构分类')}>
                     {ARCH_CATEGORIES.map(([name, count]) => (
                       <li key={name}>
-                        {name}
+                        {t(name)}
                         <b>{count}</b>
                       </li>
                     ))}

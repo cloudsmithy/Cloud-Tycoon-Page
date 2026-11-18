@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Menu, Play, X } from 'lucide-react'
-import { LINKS, NAV_ITEMS } from '../content'
+import { LINKS, NAV_ITEMS, linksFor } from '../content'
+import { useI18n } from '../i18n'
 import { useActiveSection, useScrolled } from '../lib/hooks'
-import { GithubMark, LogoMark } from './ui'
+import { BrandText, GithubMark, LangSwitch, LogoMark } from './ui'
 
 const SECTION_IDS = NAV_ITEMS.map((item) => item.id)
 
 export default function Navbar() {
+  const { t, lang } = useI18n()
+  const L = linksFor(lang)
   const scrolled = useScrolled(8)
   const active = useActiveSection(SECTION_IDS)
   const [open, setOpen] = useState(false)
@@ -17,7 +20,7 @@ export default function Navbar() {
       if (e.key === 'Escape') setOpen(false)
     }
     const onResize = () => {
-      if (window.innerWidth > 1080) setOpen(false)
+      if (window.innerWidth > 1240) setOpen(false)
     }
     window.addEventListener('keydown', onKey)
     window.addEventListener('resize', onResize)
@@ -30,15 +33,12 @@ export default function Navbar() {
   return (
     <header className={`site-header${scrolled || open ? ' is-scrolled' : ''}`}>
       <div className="container site-header__inner">
-        <a className="brand" href="#top" aria-label="云上大亨 首页" onClick={() => setOpen(false)}>
+        <a className="brand" href="#top" aria-label={t('云上大亨 首页')} onClick={() => setOpen(false)}>
           <LogoMark size={34} />
-          <span className="brand__text">
-            云上大亨
-            <small>Cloud Tycoon</small>
-          </span>
+          <BrandText />
         </a>
 
-        <nav className="nav" aria-label="主导航">
+        <nav className="nav" aria-label={t('主导航')}>
           {NAV_ITEMS.map((item) => (
             <a
               key={item.id}
@@ -46,23 +46,24 @@ export default function Navbar() {
               className={active === item.id ? 'is-active' : undefined}
               aria-current={active === item.id ? 'true' : undefined}
             >
-              {item.label}
+              {t(item.label)}
             </a>
           ))}
         </nav>
 
         <div className="header-actions">
-          <a className="icon-btn" href={LINKS.repo} target="_blank" rel="noopener noreferrer" aria-label="GitHub 仓库">
+          <LangSwitch className="lang-switch--header" />
+          <a className="icon-btn" href={LINKS.repo} target="_blank" rel="noopener noreferrer" aria-label={t('GitHub 仓库')}>
             <GithubMark size={18} />
           </a>
-          <a className="btn btn--primary btn--sm header-play" href={LINKS.playCn} target="_blank" rel="noopener noreferrer">
+          <a className="btn btn--primary btn--sm header-play" href={L.play} target="_blank" rel="noopener noreferrer">
             <Play size={14} fill="currentColor" aria-hidden="true" />
-            开始游戏
+            {t('开始游戏')}
           </a>
           <button
             type="button"
             className="icon-btn burger"
-            aria-label={open ? '关闭菜单' : '打开菜单'}
+            aria-label={open ? t('关闭菜单') : t('打开菜单')}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
@@ -72,8 +73,9 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <nav className="drawer" aria-label="移动端导航">
+        <nav className="drawer" aria-label={t('移动端导航')}>
           <div className="container">
+            <LangSwitch full className="lang-switch--drawer" />
             {NAV_ITEMS.map((item) => (
               <a
                 key={item.id}
@@ -82,12 +84,12 @@ export default function Navbar() {
                 aria-current={active === item.id ? 'true' : undefined}
                 onClick={() => setOpen(false)}
               >
-                {item.label}
+                {t(item.label)}
               </a>
             ))}
-            <a className="btn btn--primary btn--lg drawer__play" href={LINKS.playCn} target="_blank" rel="noopener noreferrer">
+            <a className="btn btn--primary btn--lg drawer__play" href={L.play} target="_blank" rel="noopener noreferrer">
               <Play size={16} fill="currentColor" aria-hidden="true" />
-              开始游戏
+              {t('开始游戏')}
             </a>
           </div>
         </nav>

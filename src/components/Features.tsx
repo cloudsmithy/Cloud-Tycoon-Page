@@ -1,14 +1,16 @@
 import { FEATURES } from '../content'
+import { useI18n } from '../i18n'
 import { Reveal, SectionHeading } from './ui'
 
 export default function Features() {
+  const { t, kw } = useI18n()
   return (
     <section className="section" id="features">
       <div className="container">
         <SectionHeading
           eyebrow="Gameplay"
-          title="不只是掷骰子买地"
-          lead="规则借鉴经典地产桌游的轻松；计费、容灾、故障和账单，都来自云从业者的日常。"
+          title={t('不只是掷骰子买地')}
+          lead={t('规则借鉴经典地产桌游的轻松；计费、容灾、故障和账单，都来自云从业者的日常。')}
         />
         <div className="features">
           {FEATURES.map((f, i) => {
@@ -19,8 +21,8 @@ export default function Features() {
                   <span className={`icon-tile tone-${f.tone}`}>
                     <Icon size={22} aria-hidden="true" />
                   </span>
-                  <h3>{f.title}</h3>
-                  <p>{f.desc}</p>
+                  <h3>{kw(t(f.title))}</h3>
+                  <p>{kw(t(f.desc))}</p>
                 </article>
               </Reveal>
             )
