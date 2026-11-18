@@ -1,0 +1,5 @@
+# 宣传片网页是工具导出的自包含 HTML（音轨、贴图都内嵌在里面），不做文本对比，也不算进 GitHub 的语言统计
+public/videos/*.html -diff linguist-generated
+*.webp binary
+*.jpg binary
+*.png binary
