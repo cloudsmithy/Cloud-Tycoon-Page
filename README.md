@@ -1,5 +1,9 @@
 # 云上大亨 官网
 
+[![Deploy to Cloudflare Pages](https://github.com/cloudsmithy/Cloud-Tycoon-Page/actions/workflows/deploy-cloudflare.yml/badge.svg?branch=master)](https://github.com/cloudsmithy/Cloud-Tycoon-Page/actions/workflows/deploy-cloudflare.yml)
+
+线上地址：https://cloud-tycoon-page.pages.dev/
+
 亚马逊云科技 User Group「云上大亨」的官方网站。React 18 + Vite 5 + TypeScript，浅色主题，构建时预渲染成静态 HTML（利于搜索引擎收录，JS 加载前页面也完整可见）。
 
 ## 开发
@@ -13,6 +17,17 @@ npm run deploy     # 构建并部署到 Cloudflare Pages（首次先运行 npx w
 ```
 
 `dist/` 是纯静态文件，`base` 为 `./`，可以放在域名根目录或任意子目录（GitHub Pages、Nginx、对象存储均可）。
+
+## 自动部署
+
+推送到 `master` 后，GitHub Actions 会自动构建并发布到 Cloudflare Pages，README 顶部的徽章就是这一步的结果。第一次使用前，在仓库 Settings → Secrets and variables → Actions 里添加两个 secret：
+
+| 名称 | 内容 |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | 在 Cloudflare「我的个人资料 → API 令牌」新建，权限只给「帐户 → Cloudflare Pages → 编辑」 |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare 帐户 ID，在控制台右侧栏或 `npx wrangler whoami` 里能看到 |
+
+本地也可以直接运行 `npm run deploy` 发布。
 
 ## 目录
 
